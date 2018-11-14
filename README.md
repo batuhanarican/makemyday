@@ -9,7 +9,7 @@ This manual makes your NodeMCU blink your LED strip two hours before your first 
 ---
 
 ## Index
-- [What we need](#whatweneed)
+- [What we need](#what-we-need)
 - [Setting up Adafruit](#adafruit)
 - [Setting up Zapier](#zapier)
 - [Arduino code](#arduino)
@@ -17,6 +17,11 @@ This manual makes your NodeMCU blink your LED strip two hours before your first 
 ---
 
 ## What we need
-- Arduino IDE
-- NodeMCU ESP8266 Board
-- 
+- Hardware
+  - NodeMCU ESP8266 Board
+  - LED strip
+- Software
+  - Arduino IDE
+- API's
+  - Adafruit IO
+  - Zapier
