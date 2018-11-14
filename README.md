@@ -12,7 +12,7 @@ This manual makes your NodeMCU blink your LED strip two hours before your first 
 - [What we need](#what-we-need)
 - [Adafruit setup](#adafruit-setup)
 - [Zapier setup](#zapier-setup)
-- [Arduino code](#arduino-code)
+- [Arduino IDE setup](#arduino-ide-setup)
 
 ---
 
@@ -30,6 +30,14 @@ This manual makes your NodeMCU blink your LED strip two hours before your first 
 ---
 
 ## Adafruit setup
+Before we start coding we need to set up Adafruit IO in order to receive data to our NodeMCU device.
+
+1. Create an account
+Go to [Adafruit IO](https://io.adafruit.com/) and create a new account.
+2. Click on 'Feeds' on the left side.
+3. There is a dropdown labeled 'Actions' at the top. Click on the dropdown and select 'Create a New Feed' and give it a name. We will extract data from this feed later on.
+
+We are done with Adafruit IO for now.
 
 ---
 
@@ -37,27 +45,15 @@ This manual makes your NodeMCU blink your LED strip two hours before your first 
 
 ---
 
+## Arduino IDE setup
+
+---
+
 ## Arduino code
-For people who know how to code:
+For people who are already familiar with Arduino:
 
-```ruby
-// Adafruit IO RGB LED Output Example
-//
-// Adafruit invests time and resources providing this open source code.
-// Please support Adafruit and open source hardware by purchasing
-// products from Adafruit!
-//
-// Written by Todd Treece for Adafruit Industries
-// Copyright (c) 2016-2017 Adafruit Industries
-// Licensed under the MIT license.
-//
-// All text above must be included in any redistribution.
+```
 
-/************************** Configuration ***********************************/
-
-// edit the config.h tab and enter your Adafruit IO credentials
-// and any additional configuration needed for WiFi, cellular,
-// or ethernet clients.
 #include "config.h"
 
 /************************ Example Starts Here *******************************/
