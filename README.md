@@ -14,6 +14,7 @@ This manual makes your NodeMCU blink your LED strip two hours before your first 
 - [Zapier setup](#zapier-setup)
 - [Adafruit IO Library](#adafruit-io-library)
 - [Arduino code](#arduino-code)
+- [Example](example)
 
 ---
 
