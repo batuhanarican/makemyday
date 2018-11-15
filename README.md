@@ -245,4 +245,11 @@ Save everything properly and upload it to your NodeMCU device.
 Voila! You have just created your own smart LED strip.
 
 
-> Tip: with this code, the 'blinkToggle' will never be reset. So this code will just work for one time. Try connecting IFTTT to Adafruit IO to send value 0 on a specific time every day (like midnight).
+Tip: with this code, the 'blinkToggle' will never be reset so it will just work once. Try connecting IFTTT to Adafruit IO to send value 0 on a specific time every day (like midnight).
+
+### Division of tasks
+- Batuhan
+  - Arduino code
+- Vince
+  - Adafruit setup
+  - Zapier setup
