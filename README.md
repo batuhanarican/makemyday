@@ -12,7 +12,7 @@ This manual makes your NodeMCU blink your LED strip two hours before your first 
 - [What we need](#what-we-need)
 - [Adafruit setup](#adafruit-setup)
 - [Zapier setup](#zapier-setup)
-- [Arduino IDE setup](#arduino-ide-setup)
+- [Adafruit IO Library](#adafruit-io-library)
 - [Arduino code](#arduino-code)
 
 ---
@@ -62,30 +62,51 @@ Zapier is now set up.
 
 ---
 
-## Arduino IDE setup
+## Adafruit IO Library
+1. Go to https://www.arduino.cc/en/Main/Software and download the latest version of the 'Arduino IDE' software.
+2. Open Arduino IDE and select in the menu above: Sketch > Include Library > Manage Libraries...
+3. Search for 'Adafruit IO Arduino' and download the latest library.
 
 ---
 
 ## Arduino code
-For people who are already familiar with Arduino:
+Now it is time to write some code.
+
+First we need to include the libraries we are going to use. We will later create a file called 'config.h' to add our wifi credentials. We will use 'Adafruit_NeoPixel.h' to easily control our led strip.
 
 ```
 #include "config.h"
-
 #include "Adafruit_NeoPixel.h"
+```
 
+Now we define our data pin with 'PIXEL_PIN' and the amount of the LED's on our LED strip with 'PIXEL_COUNT'. We register the type of our LED strip with 'PIXEL_TYPE'.
+```
 #define PIXEL_PIN     D5
 #define PIXEL_COUNT   11
 #define PIXEL_TYPE    NEO_GRB + NEO_KHZ800
+```
 
+We create an alias, called 'pixels' to call and control our LED strip later on. 
+```
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, PIXEL_TYPE);
+```
 
-AdafruitIO_Feed *makemyday = io.feed("makemyday");
+With this line we subscribe to our feed that we have created in Adafruit IO. Replace 'feedname' with the name of the feed you created.
+```
+AdafruitIO_Feed *feedname = io.feed("feedname");
+```
 
+These integers will be used to create our LED blink function. Adjust the 'repeatMax' value to define how many times your LED's will blink when it is triggered.
+```
 int blinkToggle = 0;
 int repeatCounter = 0;
 int repeatMax = 10;
+```
 
+This is the part in which the NodeMCU connects to Wi-Fi and Adafruit IO. 'feedname->onMessage(handleMessage)' will run the 'handleMessage' function when any data is received from the feed. 'feedname->get()' will force Adafruit IO to re-send the latest data in the feed. 
+
+Don't forget to change 'feedname'.
+```
 void setup() {
 
   Serial.begin(115200);
@@ -95,7 +116,7 @@ void setup() {
   Serial.print("Connecting to Adafruit IO");
   io.connect();
 
-  makemyday->onMessage(handleMessage);
+  feedname->onMessage(handleMessage);
 
   while(io.status() < AIO_CONNECTED) {
     Serial.print(".");
@@ -104,17 +125,23 @@ void setup() {
 
   Serial.println();
   Serial.println(io.statusText());
-  makemyday->get();
+  feedname->get();
 
   pixels.begin();
   pixels.show();
 }
+```
 
+Create 'void loop()' and run these functions. We will create the 'runBlink()' function later on. 
+```
 void loop() {
   io.run(); 
   runBlink();
 }
+```
 
+'handleMessage' will be run every time a data packet is sent to our feed. We create an if-statement to make a toggle that stays on 1 until it is reset. This will prevent the blinking after the first appointment.
+```
 void handleMessage(AdafruitIO_Data *data) {
   Serial.println(data->value());
   
@@ -129,35 +156,36 @@ void handleMessage(AdafruitIO_Data *data) {
   }
   
 }
+```
 
+The 'runBlink' function will make the LED strip blink when the right value is received from Adafruit IO.
+```
 void runBlink() {
   if (blinkToggle == 1) {
     if (repeatCounter < repeatMax) {
-      blinkHigh();
-      blinkLow();
+      blinkLed();
       repeatCounter ++;
       Serial.println(repeatCounter);
     }
   }
-  if else (blinkToggle == 0) {
-    blinkLow();
+  if (blinkToggle == 0) {
+    pixels.setPixelColor(i, 0,0,0);
   }
 }
-  
-void blinkHigh() {
+```
+
+'blinkLed' will make the LED strip light up and turn off with a delay of 1s.
+```
+void blinkLed() {
   for(int i=0; i<PIXEL_COUNT; ++i) {
     pixels.setPixelColor(i, 255,255,0);
     pixels.show();
   }
   delay(1000);
-}
-
-void blinkLow() {
   for(int i=0; i<PIXEL_COUNT; ++i) {
     pixels.setPixelColor(i, 0,0,0);
     pixels.show();
   }
   delay(1000);
 }
-
 ```
