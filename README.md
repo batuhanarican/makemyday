@@ -72,39 +72,38 @@ Zapier is now set up.
 ## Arduino code
 Now it is time to write some code.
 
-First we need to include the libraries we are going to use. We will later create a file called 'config.h' to add our wifi credentials. We will use 'Adafruit_NeoPixel.h' to easily control our led strip.
+>First we need to include the libraries we are going to use. We will later create a file called 'config.h' to add our wifi credentials. We will use 'Adafruit_NeoPixel.h' to easily control our led strip.
 
 ```
 #include "config.h"
 #include "Adafruit_NeoPixel.h"
 ```
 
-Now we define our data pin with 'PIXEL_PIN' and the amount of the LED's on our LED strip with 'PIXEL_COUNT'. We register the type of our LED strip with 'PIXEL_TYPE'.
+>Now we define our data pin with 'PIXEL_PIN' and the amount of the LED's on our LED strip with 'PIXEL_COUNT'. We register the type of our LED strip with 'PIXEL_TYPE'.
 ```
 #define PIXEL_PIN     D5
 #define PIXEL_COUNT   11
 #define PIXEL_TYPE    NEO_GRB + NEO_KHZ800
 ```
 
-We create an alias, called 'pixels' to call and control our LED strip later on. 
+>We create an alias, called 'pixels' to call and control our LED strip later on. 
 ```
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(PIXEL_COUNT, PIXEL_PIN, PIXEL_TYPE);
 ```
 
-With this line we subscribe to our feed that we have created in Adafruit IO. Replace 'feedname' with the name of the feed you created.
+>With this line we subscribe to our feed that we have created in Adafruit IO. Replace 'feedname' with the name of the feed you created.
 ```
 AdafruitIO_Feed *feedname = io.feed("feedname");
 ```
 
-These integers will be used to create our LED blink function. Adjust the 'repeatMax' value to define how many times your LED's will blink when it is triggered.
+>These integers will be used to create our LED blink function. Adjust the 'repeatMax' value to define how many times your LED's will blink when it is triggered.
 ```
 int blinkToggle = 0;
 int repeatCounter = 0;
 int repeatMax = 10;
 ```
 
-This is the part in which the NodeMCU connects to Wi-Fi and Adafruit IO. 'feedname->onMessage(handleMessage)' will run the 'handleMessage' function when any data is received from the feed. 'feedname->get()' will force Adafruit IO to re-send the latest data in the feed. 
-
+>This is the part in which the NodeMCU connects to Wi-Fi and Adafruit IO. 'feedname->onMessage(handleMessage)' will run the 'handleMessage' function when any data is received from the feed. 'feedname->get()' will force Adafruit IO to re-send the latest data in the feed. 
 Don't forget to change 'feedname'.
 ```
 void setup() {
@@ -132,7 +131,7 @@ void setup() {
 }
 ```
 
-Create 'void loop()' and run these functions. We will create the 'runBlink()' function later on. 
+>Create 'void loop()' and run these functions. We will create the 'runBlink()' function later on. 
 ```
 void loop() {
   io.run(); 
@@ -140,7 +139,7 @@ void loop() {
 }
 ```
 
-'handleMessage' will be run every time a data packet is sent to our feed. We create an if-statement to make a toggle that stays on 1 until it is reset. This will prevent the blinking after the first appointment.
+>'handleMessage' will be run every time a data packet is sent to our feed. We create an if-statement to make a toggle that stays on 1 until it is reset. This will prevent the blinking after the first appointment.
 ```
 void handleMessage(AdafruitIO_Data *data) {
   Serial.println(data->value());
@@ -158,7 +157,7 @@ void handleMessage(AdafruitIO_Data *data) {
 }
 ```
 
-The 'runBlink' function will make the LED strip blink when the right value is received from Adafruit IO.
+>The 'runBlink' function will make the LED strip blink when the right value is received from Adafruit IO.
 ```
 void runBlink() {
   if (blinkToggle == 1) {
@@ -174,7 +173,7 @@ void runBlink() {
 }
 ```
 
-'blinkLed' will make the LED strip light up and turn off with a delay of 1s.
+>'blinkLed' will make the LED strip light up and turn off with a delay of 1s.
 ```
 void blinkLed() {
   for(int i=0; i<PIXEL_COUNT; ++i) {
@@ -190,11 +189,11 @@ void blinkLed() {
 }
 ```
 
-Now we have to create a 'config.h' file in the same folder as the Arduino file. 
+>Now we have to create a 'config.h' file in the same folder as the Arduino file. 
 
-Copy and paste this code inside the 'config.h' file and define the 'IO_USERNAME' and 'IO_KEY'. These can be retreived from Adafruit IO.
+>Copy and paste this code inside the 'config.h' file and define the 'IO_USERNAME' and 'IO_KEY'. These can be retreived from Adafruit IO.
 
-Also define your Wi-Fi credentials to be able to make a connection.
+>Also define your Wi-Fi credentials to be able to make a connection.
 ```
 /************************ Adafruit IO Config *******************************/
 
